@@ -30,8 +30,14 @@ class ApplicationFileViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # Only return files belonging to the current user's applications
         return ApplicationFile.objects.filter(application__user=self.request.user)
+
+    def perform_create(self, serializer):
+        application = serializer.validated_data.get('application')
+        if application.user != self.request.user:
+            from rest_framework.exceptions import PermissionDenied
+            raise PermissionDenied("You do not own this application.")
+        serializer.save()
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
