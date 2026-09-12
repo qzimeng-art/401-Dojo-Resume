@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include  # Added include here
+from django.conf import settings
+from django.conf.urls.static import static
 from rest_framework import routers
-from applications.views import ApplicationViewSet, ApplicationFileViewSet, ReviewViewSet, DeleteAccountView
+from applications.views import ApplicationViewSet, ApplicationFileViewSet, ReviewViewSet, DeleteAccountView, MasterResumeViewSet
 from applications.views import GoogleLogin
 
 #  JWT Authentication
@@ -14,6 +16,7 @@ router = routers.DefaultRouter()
 router.register(r'applications', ApplicationViewSet, basename='application')
 router.register(r'files', ApplicationFileViewSet, basename='file')
 router.register(r'reviews', ReviewViewSet, basename='review')
+router.register(r'master-resume', MasterResumeViewSet, basename='master-resume')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,3 +31,6 @@ urlpatterns = [
     # Allauth URLs for Google OAuth callbacks
     path('accounts/', include('allauth.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

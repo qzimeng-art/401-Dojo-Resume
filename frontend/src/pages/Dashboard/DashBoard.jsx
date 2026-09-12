@@ -7,7 +7,8 @@ import {
     DashboardHeader,
     ListView,
     SearchControls,
-    StatsSection
+    StatsSection,
+    MasterResumeUploadModal
 } from '../../components/dashcomp';
 import ApplicationFormModal from '../../components/dashcomp/ApplicationFormModal';
 import ProfileSection from '../../components/dashcomp/ProfileSection';
@@ -21,12 +22,14 @@ const DashBoard = ({ isDemo = false }) => {
   const [activeView, setActiveView] = useState('board');
   const [selectedApp, setSelectedApp] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showUploadResumeModal, setShowUploadResumeModal] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [applications, setApplications] = useState(isDemo ? sampleApplications : []);
   const [loading, setLoading] = useState(!isDemo);
   const [searchQuery, setSearchQuery] = useState('');
   const [editingApp, setEditingApp] = useState(null);
+  const [masterResume, setMasterResume] = useState(null);
 
   const statuses = ["Applied", "Interview", "Offer", "Rejected"];
 
@@ -68,14 +71,45 @@ const DashBoard = ({ isDemo = false }) => {
 
   const displayName = user?.display_name || user?.first_name || user?.username || (isDemo ? "Demo User" : "Account");
 
-  useEffect(() => {
-    if (!isDemo && user) {
-      fetchApplications();
+  const fetchMasterResume = async () => {
+    try {
+      const response = await api.get('/api/master-resume/');
+      if (response.data && response.data.length > 0) {
+        setMasterResume(response.data[0]);
+        return;
+      }
+    } catch (error) {
+      console.error("Failed to fetch master resume", error);
     }
+
+    if (isDemo) {
+      try {
+        const saved = localStorage.getItem('demo_master_resume');
+        if (saved) setMasterResume(JSON.parse(saved));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!isDemo) {
+      if (user) {
+        fetchApplications();
+      } else {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+    }
+    fetchMasterResume();
   }, [isDemo, user]);
 
   const fetchApplications = async () => {
-    if (!user && !isDemo) return;
+    if (!user && !isDemo) {
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
       const response = await api.get('/api/applications/');
@@ -132,6 +166,7 @@ const DashBoard = ({ isDemo = false }) => {
           statuses={statuses}
           filteredApplications={filteredApplications}
           setShowAddModal={handleCreateClick}
+          onUploadMasterResume={() => setShowUploadResumeModal(true)}
         />
       )}
 
@@ -156,7 +191,14 @@ const DashBoard = ({ isDemo = false }) => {
         ) : (
           (() => {
             if (activeView === 'profile') {
-              return <ProfileSection user={user} onBack={() => setActiveView('board')} />;
+              return (
+                <ProfileSection
+                  user={user}
+                  onBack={() => setActiveView('board')}
+                  masterResume={masterResume}
+                  onUploadMasterResume={() => setShowUploadResumeModal(true)}
+                />
+              );
             }
             return activeView === 'board' ? (
               <BoardView
@@ -229,6 +271,17 @@ const DashBoard = ({ isDemo = false }) => {
         onClose={() => setShowAddModal(false)}
         onSuccess={handleSuccess}
         initialData={editingApp}
+      />
+
+      {/* Master Resume Upload Modal */}
+      <MasterResumeUploadModal
+        isOpen={showUploadResumeModal}
+        onClose={() => setShowUploadResumeModal(false)}
+        isDemo={isDemo}
+        onUploadSuccess={(uploadedData) => {
+          if (uploadedData) setMasterResume(uploadedData);
+          else fetchMasterResume();
+        }}
       />
     </div>
   );

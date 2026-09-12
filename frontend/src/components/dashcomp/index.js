@@ -6,6 +6,8 @@ export { default as ListView } from './ListView';
 export { default as ReviewForm } from './ReviewForm';
 export { default as SearchControls } from './SearchControls';
 export { default as StatsSection } from './StatsSection';
+export { default as MasterResumeUploadModal } from './MasterResumeUploadModal';
+
 
 
 export { default as ApplicationFormModal } from './ApplicationFormModal';
