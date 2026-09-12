@@ -10,13 +10,6 @@ const StatsSection = ({ statuses, filteredApplications, setShowAddModal }) => {
             <p className="text-gray-500 mt-1">Track and manage your job search journey</p>
           </div>
 
-          {/* Ad Banner Placeholder */}
-          <div className="hidden md:flex flex-1 items-center justify-center px-4">
-             <div className="w-full max-w-[468px] h-[60px] bg-gray-50 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-xs text-gray-400 uppercase tracking-widest">
-               Google Ad Space
-             </div>
-          </div>
-
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setShowAddModal(true)}
