@@ -145,7 +145,6 @@ const DashBoard = ({ isDemo = false }) => {
               activeView={activeView}
               setActiveView={setActiveView}
             />
-            {/* <KoFiBanner /> */}
             <EmailVerificationBanner user={user} />
           </>
         )}
