@@ -5,7 +5,7 @@ from .models import Application, ApplicationFile, Review
 class ApplicationFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ApplicationFile
-        fields = ['id', 'file', 'file_type', 'original_filename', 'created_at']
+        fields = ['id', 'application', 'file', 'file_type', 'original_filename', 'created_at']
 
 
 class ApplicationSerializer(serializers.ModelSerializer):

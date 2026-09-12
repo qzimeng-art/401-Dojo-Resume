@@ -1,5 +1,5 @@
-import { Calendar, Upload, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Calendar, FileText, Upload, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import api from '../../api/axios';
 
 const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }) => {
@@ -14,6 +14,9 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [pendingFiles, setPendingFiles] = useState([]);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (initialData) {
@@ -37,6 +40,8 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
         notes: ''
       });
     }
+    setPendingFiles([]);
+    setError(null);
   }, [initialData, isOpen]);
 
   if (!isOpen) return null;
@@ -46,17 +51,84 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const addFiles = (fileList) => {
+    const incoming = Array.from(fileList);
+    setPendingFiles(prev => {
+      const existingNames = new Set(prev.map(f => f.name));
+      const deduped = incoming.filter(f => !existingNames.has(f.name));
+      return [...prev, ...deduped];
+    });
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    if (e.dataTransfer.files?.length) {
+      addFiles(e.dataTransfer.files);
+    }
+  };
+
+  const handleFileInputChange = (e) => {
+    if (e.target.files?.length) {
+      addFiles(e.target.files);
+    }
+    e.target.value = '';
+  };
+
+  const removeFile = (index) => {
+    setPendingFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const getFileType = (file) => {
+    const name = file.name.toLowerCase();
+    if (name.endsWith('.pdf')) return 'PDF';
+    if (name.endsWith('.doc') || name.endsWith('.docx')) return 'DOC';
+    if (name.endsWith('.txt')) return 'TXT';
+    return file.type || 'FILE';
+  };
+
+  const uploadFiles = async (applicationId) => {
+    for (const file of pendingFiles) {
+      const body = new FormData();
+      body.append('application', applicationId);
+      body.append('file', file);
+      body.append('file_type', getFileType(file));
+      body.append('original_filename', file.name);
+      await api.post('/api/files/', body, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
+      let applicationId;
       if (initialData) {
         await api.put(`/api/applications/${initialData.id}/`, formData);
+        applicationId = initialData.id;
       } else {
-        await api.post('/api/applications/', formData);
+        const res = await api.post('/api/applications/', formData);
+        applicationId = res.data.id;
       }
+
+      if (pendingFiles.length > 0) {
+        await uploadFiles(applicationId);
+      }
+
       onSuccess();
       onClose();
     } catch (err) {
@@ -64,13 +136,13 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
       const errorData = err.response?.data;
       if (errorData) {
         if (typeof errorData === 'object') {
-           const messages = Object.entries(errorData).map(([key, val]) => {
-             const fieldError = Array.isArray(val) ? val.join(', ') : val;
-             return `${key}: ${fieldError}`;
-           }).join(' | ');
-           setError(`Failed: ${messages}`);
+          const messages = Object.entries(errorData).map(([key, val]) => {
+            const fieldError = Array.isArray(val) ? val.join(', ') : val;
+            return `${key}: ${fieldError}`;
+          }).join(' | ');
+          setError(`Failed: ${messages}`);
         } else {
-           setError(`Failed: ${JSON.stringify(errorData)}`);
+          setError(`Failed: ${JSON.stringify(errorData)}`);
         }
       } else {
         setError('Failed to save application. Please try again.');
@@ -83,13 +155,13 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
       <div className="bg-white rounded-xl w-full max-w-4xl shadow-2xl relative flex flex-col max-h-[90vh] overflow-hidden">
-        
+
         {/* Header */}
         <div className="px-6 py-4 flex items-center justify-between border-b border-gray-100">
           <h2 className="text-xl font-bold text-gray-900">
             {initialData ? 'Edit Application' : 'Add New Application'}
           </h2>
-          <button 
+          <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 p-1 rounded-full transition-colors"
           >
@@ -204,11 +276,54 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
 
             <div className="space-y-1.5 col-span-full">
               <label className="text-xs font-bold text-gray-700">Upload Files</label>
-              <div className="border-2 border-dashed border-blue-200 rounded-xl p-8 bg-blue-50/30 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-blue-50 transition-colors">
+
+              {/* Drop zone */}
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-colors ${
+                  isDragOver
+                    ? 'border-blue-400 bg-blue-50'
+                    : 'border-blue-200 bg-blue-50/30 hover:bg-blue-50'
+                }`}
+              >
                 <Upload className="text-blue-400 mb-2" size={24} />
                 <p className="text-sm font-medium text-gray-600">Click to upload or drag and drop</p>
                 <p className="text-xs text-gray-400 mt-1">Resume, Cover Letter, etc.</p>
               </div>
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept=".pdf,.doc,.docx,.txt"
+                onChange={handleFileInputChange}
+                className="hidden"
+              />
+
+              {/* Selected files list */}
+              {pendingFiles.length > 0 && (
+                <ul className="mt-2 space-y-1.5">
+                  {pendingFiles.map((file, idx) => (
+                    <li key={idx} className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <FileText size={14} className="text-blue-500 shrink-0" />
+                        <span className="text-xs text-gray-700 truncate">{file.name}</span>
+                        <span className="text-[10px] text-gray-400 shrink-0">{(file.size / 1024).toFixed(0)} KB</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeFile(idx)}
+                        className="ml-2 text-gray-400 hover:text-red-500 transition-colors shrink-0"
+                      >
+                        <X size={14} />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </form>
         </div>
@@ -227,10 +342,10 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
                 Saving...
               </span>
             ) : (
-               initialData ? 'Save Changes' : 'Add Application'
+              initialData ? 'Save Changes' : 'Add Application'
             )}
           </button>
-           <button
+          <button
             type="button"
             onClick={onClose}
             className="px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200"
