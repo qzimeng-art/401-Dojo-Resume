@@ -14,7 +14,7 @@ import DashBoard from "./pages/Dashboard/DashBoard";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
+import PrivacyPolicy from "./pages/PrivacyPage";
 import SecurityPage from "./pages/SecurityPage";
 import SignupPage from "./pages/SignupPage";
 import SupportPage from "./pages/SupportPage";
