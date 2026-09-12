@@ -15,7 +15,8 @@ fi
 
 source venv/bin/activate
 
-pip install -r requirements.txt -q
+# psycopg2-binary requires PostgreSQL headers and isn't needed locally (SQLite is used instead)
+grep -v "psycopg2" requirements.txt | pip install -r /dev/stdin -q || { echo "[backend] pip install failed"; exit 1; }
 
 if [ ! -f ".env" ]; then
   echo "[backend] No .env found — creating one for local dev..."
@@ -30,9 +31,9 @@ python manage.py runserver 2>&1 | sed $'s/^/\033[36m[backend]\033[0m  /' &
 # ── Frontend ───────────────────────────────────────────────────────────────────
 cd "$ROOT/frontend"
 
-if [ ! -d "node_modules" ]; then
+if [ ! -d "node_modules" ] || [ ! -f "node_modules/.bin/vite" ]; then
   echo "[frontend] Installing dependencies..."
-  npm install -s
+  PUPPETEER_SKIP_DOWNLOAD=true npm install -s || { echo "[frontend] npm install failed"; exit 1; }
 fi
 
 echo "[frontend] Starting on http://localhost:5173"
