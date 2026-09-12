@@ -14,7 +14,6 @@ import DashBoard from "./pages/Dashboard/DashBoard";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
 import SecurityPage from "./pages/SecurityPage";
 import SignupPage from "./pages/SignupPage";
 import SupportPage from "./pages/SupportPage";
@@ -55,7 +54,6 @@ const AppContent = () => {
           }
         />
         <Route path="/support" element={<SupportPage />} />
-        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsConditions />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />

@@ -5,15 +5,20 @@ import App from './App.jsx'
 import { AuthContextProvider } from './context/AuthContext.jsx'
 import './index.css'
 
-// Replace with your real Client ID from Google Cloud Console
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+
+const app = (
+  <AuthContextProvider>
+    <App />
+  </AuthContextProvider>
+);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <AuthContextProvider>
-        <App />
-      </AuthContextProvider>
-    </GoogleOAuthProvider>
+    {GOOGLE_CLIENT_ID ? (
+      <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+        {app}
+      </GoogleOAuthProvider>
+    ) : app}
   </StrictMode>,
 )

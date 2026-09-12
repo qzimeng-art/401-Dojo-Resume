@@ -129,6 +129,11 @@ def setup_backend(py):
 
 
 def setup_frontend():
+    env_file = FRONTEND / ".env"
+    if not env_file.exists():
+        print("[frontend] No .env found — creating one for local dev...")
+        env_file.write_text((FRONTEND / ".env.example").read_text())
+
     vite = FRONTEND / "node_modules" / ".bin" / ("vite.cmd" if IS_WIN else "vite")
     if not vite.exists():
         print("[frontend] Installing dependencies...")

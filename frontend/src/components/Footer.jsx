@@ -65,10 +65,7 @@ const Footer = () => {
           <div className="col-span-2 md:col-span-1 flex flex-col items-center md:items-start mt-4 md:mt-0 pt-8 md:pt-0 border-t border-gray-800 md:border-t-0 w-full md:w-auto">
             <h4 className="text-white font-semibold mb-6 uppercase text-xs tracking-widest">Legal</h4>
             <div className="flex flex-wrap justify-center md:flex-col gap-x-8 gap-y-4 text-sm">
-              <Link to="/privacy" className="hover:text-white transition-colors duration-200">
-                Privacy
-              </Link>
-              <Link to="/terms" className="hover:text-white transition-colors duration-200">
+<Link to="/terms" className="hover:text-white transition-colors duration-200">
                 Terms
               </Link>
               <Link to="/security" className="hover:text-white transition-colors duration-200">

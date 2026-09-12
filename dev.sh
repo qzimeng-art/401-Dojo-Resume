@@ -31,6 +31,11 @@ python manage.py runserver 2>&1 | sed $'s/^/\033[36m[backend]\033[0m  /' &
 # ── Frontend ───────────────────────────────────────────────────────────────────
 cd "$ROOT/frontend"
 
+if [ ! -f ".env" ]; then
+  echo "[frontend] No .env found — creating one for local dev..."
+  cp .env.example .env
+fi
+
 if [ ! -d "node_modules" ] || [ ! -f "node_modules/.bin/vite" ]; then
   echo "[frontend] Installing dependencies..."
   PUPPETEER_SKIP_DOWNLOAD=true npm install -s || { echo "[frontend] npm install failed"; exit 1; }
