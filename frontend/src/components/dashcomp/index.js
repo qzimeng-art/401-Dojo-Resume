@@ -9,6 +9,5 @@ export { default as StatsSection } from './StatsSection';
 
 
 export { default as ApplicationFormModal } from './ApplicationFormModal';
-export { default as KoFiBanner } from './KoFiBanner';
 export { default as ProfileSection } from './ProfileSection';
 

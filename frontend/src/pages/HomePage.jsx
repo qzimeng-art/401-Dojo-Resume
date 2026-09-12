@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import AdDisplay from "../components/AdDisplay";
 import CTA from "../components/CTA";
 import Features from "../components/Features";
 import Footer from "../components/Footer";
@@ -40,9 +39,6 @@ const HomePage = () => {
       <Navbar />
       <LandingHero onSignIn={handleSignIn} onTryDemo={handleTryDemo} />
       
-      {/* Ad Placement */}
-      <AdDisplay />
-
       <div id="features">
         <Features />
       </div>
