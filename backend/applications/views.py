@@ -2,8 +2,11 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 import os
-from .models import Application, ApplicationFile, Review
-from .serializers import ApplicationSerializer, ApplicationFileSerializer, ReviewSerializer
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
+from .models import Application, ApplicationFile, Review, MasterResume
+from .serializers import ApplicationSerializer, ApplicationFileSerializer, ReviewSerializer, MasterResumeSerializer
 
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
@@ -67,3 +70,46 @@ class DeleteAccountView(APIView):
         user = request.user
         user.delete()
         return Response({"detail": "Account deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+
+class MasterResumeViewSet(viewsets.ModelViewSet):
+    serializer_class = MasterResumeSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def _get_target_user(self):
+        if self.request.user and self.request.user.is_authenticated:
+            return self.request.user
+        demo_user, _ = User.objects.get_or_create(
+            username='demo_user',
+            defaults={'email': 'demo@example.com'}
+        )
+        return demo_user
+
+    def get_queryset(self):
+        target_user = self._get_target_user()
+        return MasterResume.objects.filter(user=target_user).order_by('-created_at')
+
+    def create(self, request, *args, **kwargs):
+        file_obj = request.FILES.get('file')
+        if not file_obj:
+            return Response({"detail": "No file uploaded."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        filename = file_obj.name.lower()
+        if not (filename.endswith('.pdf') or filename.endswith('.doc') or filename.endswith('.docx')):
+            return Response({"detail": "Only PDF and Word documents (.pdf, .doc, .docx) are supported."}, status=status.HTTP_400_BAD_REQUEST)
+
+        file_type = 'PDF' if filename.endswith('.pdf') else ('DOCX' if filename.endswith('.docx') else 'DOC')
+        
+        target_user = self._get_target_user()
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        master_resume = serializer.save(
+            user=target_user,
+            file_type=file_type,
+            original_filename=file_obj.name,
+            file_size=file_obj.size
+        )
+        return Response({
+            "message": "Master resume uploaded successfully!",
+            "data": MasterResumeSerializer(master_resume).data
+        }, status=status.HTTP_201_CREATED)

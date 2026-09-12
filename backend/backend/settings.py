@@ -250,3 +250,8 @@ ACCOUNT_UNIQUE_EMAIL = True
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'applications.serializers.CustomRegisterSerializer',
 }
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+

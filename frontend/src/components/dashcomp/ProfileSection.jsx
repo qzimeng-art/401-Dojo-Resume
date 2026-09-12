@@ -1,13 +1,21 @@
-import { ArrowLeft, Heart, Info, Shield, User } from "lucide-react";
+import { ArrowLeft, Heart, Info, Shield, User, FileText, Upload, Download } from "lucide-react";
 
-const ProfileSection = ({ user, onBack }) => {
+const formatFileSize = (bytes) => {
+  if (!bytes) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+};
+
+const ProfileSection = ({ user, onBack, masterResume, onUploadMasterResume }) => {
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <button 
           onClick={onBack}
-          className="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition-all shadow-sm"
+          className="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition-all shadow-sm cursor-pointer"
         >
           <ArrowLeft size={20} className="text-slate-600" />
         </button>
@@ -51,6 +59,75 @@ const ProfileSection = ({ user, onBack }) => {
 
         {/* Right Column: Details */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Master Resume Section */}
+          <section className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-black text-slate-900 flex items-center gap-3">
+                <div className="p-1.5 bg-blue-50 rounded-lg">
+                  <FileText size={18} className="text-blue-600" />
+                </div>
+                Master Resume
+              </h3>
+              <button
+                onClick={onUploadMasterResume}
+                className="px-4 py-2 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 transition-all text-sm shadow-lg shadow-blue-500/20 active:scale-95 flex items-center gap-2 cursor-pointer"
+              >
+                <Upload size={16} />
+                {masterResume ? 'Upload New Version' : 'Upload Resume'}
+              </button>
+            </div>
+
+            {masterResume ? (
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className={`p-3 rounded-2xl flex-shrink-0 ${
+                    masterResume.file_type === 'PDF' ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'
+                  }`}>
+                    <FileText size={28} />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold text-slate-900 text-base truncate">
+                        {masterResume.original_filename}
+                      </p>
+                      <span className={`text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider ${
+                        masterResume.file_type === 'PDF' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'
+                      }`}>
+                        {masterResume.file_type || 'Document'}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-500 font-medium mt-1">
+                      {formatFileSize(masterResume.file_size)} • Uploaded {new Date(masterResume.created_at || masterResume.uploaded_at || Date.now()).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 self-end sm:self-center">
+                  {masterResume.file && (
+                    <a
+                      href={masterResume.file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl hover:bg-slate-100 transition-all text-xs flex items-center gap-1.5 shadow-sm"
+                    >
+                      <Download size={14} />
+                      Download
+                    </a>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="bg-slate-50 border border-dashed border-slate-200 rounded-2xl p-6 text-center">
+                <p className="text-slate-600 font-semibold text-sm">
+                  No master resume uploaded yet.
+                </p>
+                <p className="text-slate-400 text-xs mt-1">
+                  Upload your master resume to easily keep track of your credentials and documents.
+                </p>
+              </div>
+            )}
+          </section>
+
           <section className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-black text-slate-900 flex items-center gap-3">
@@ -113,3 +190,4 @@ const ProfileSection = ({ user, onBack }) => {
 };
 
 export default ProfileSection;
+

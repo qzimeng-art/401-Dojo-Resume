@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from .models import Application, ApplicationFile, Review
+from .models import Application, ApplicationFile, Review, MasterResume
+
+
+class MasterResumeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MasterResume
+        fields = ['id', 'file', 'file_type', 'original_filename', 'file_size', 'created_at', 'updated_at']
+        read_only_fields = ['user', 'file_type', 'original_filename', 'file_size', 'created_at', 'updated_at']
 
 
 class ApplicationFileSerializer(serializers.ModelSerializer):
