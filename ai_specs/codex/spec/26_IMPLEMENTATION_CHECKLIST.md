@@ -1,99 +1,25 @@
-# Implementation Checklist
+# Current Implementation Checklist
 
-## Foundation
-- [ ] Next.js app runs
-- [ ] Tailwind works
-- [ ] shadcn initialized
-- [ ] Supabase client configured
-- [ ] env example exists
-- [ ] shared types exist
-- [ ] status constants exist
-- [ ] app shell exists
+## Implemented
 
-## Database
-- [ ] applications table
-- [ ] master_resumes table
-- [ ] tailored_resumes table
-- [ ] communications table
-- [ ] activity_events table
-- [ ] indexes
-- [ ] cascade behavior
-- [ ] seed script
+- [x] Application, ApplicationFile, and Review models
+- [x] Owner-scoped application/file APIs
+- [x] Email/password and Google authentication
+- [x] Profile and account deletion API
+- [x] React/Vite public pages and protected dashboard
+- [x] Board/list, search, and status counts
+- [x] Application CRUD and multipart uploads
+- [x] Public demo and moderated reviews
+- [x] Expo auth/navigation/dashboard/list/edit flows
+- [x] Vercel rewrite, backend Dockerfile, and EAS profiles
 
-## Dashboard
-- [ ] KPI cards
-- [ ] funnel
-- [ ] needs attention
-- [ ] conversions
-- [ ] recent activity
-- [ ] stale section
+## Roadmap/not implemented
 
-## Applications
-- [ ] board
-- [ ] list
-- [ ] search
-- [ ] filters
-- [ ] sort
-- [ ] add
-- [ ] edit
-- [ ] delete
-- [ ] status
+- [ ] Structured/tailored resumes
+- [ ] Resume parsing or match scoring
+- [ ] Today/follow-ups/notifications
+- [ ] Communication/status timeline
+- [ ] Drag-and-drop status mutation
+- [ ] Advanced analytics/reports
 
-## Detail
-- [ ] header
-- [ ] metadata
-- [ ] job description
-- [ ] notes
-- [ ] next action
-- [ ] resume card
-- [ ] timeline
-- [ ] log communication
-- [ ] quick response
-
-## Resume
-- [ ] master editor
-- [ ] preview
-- [ ] print
-- [ ] clone to tailored
-- [ ] tailored editor
-- [ ] application link
-
-## Match
-- [ ] normalize
-- [ ] skill dictionary
-- [ ] extraction
-- [ ] weighting
-- [ ] score
-- [ ] matched
-- [ ] missing
-- [ ] focus terms
-- [ ] tests
-
-## Today
-- [ ] priority algorithm
-- [ ] overdue
-- [ ] due today
-- [ ] interview soon
-- [ ] stale
-- [ ] empty state
-
-## UX
-- [ ] responsive desktop
-- [ ] responsive mobile
-- [ ] skeletons
-- [ ] toasts
-- [ ] confirmations
-- [ ] accessible labels
-- [ ] focus states
-- [ ] empty states
-- [ ] no horizontal overflow
-
-## Final
-- [ ] README
-- [ ] typecheck
-- [ ] lint
-- [ ] tests
-- [ ] build
-- [ ] deployment
-- [ ] smoke test
-- [ ] demo rehearsal
+This is a capability inventory, not a claim that every flow is bug-free; verify using the test plan.

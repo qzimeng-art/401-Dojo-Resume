@@ -1,173 +1,27 @@
-# Server Actions and Query Contracts
+# API Contracts
+
+All base paths are under `/api/`.
 
 ## Applications
 
-### listApplications(filters)
+- `GET/POST /api/applications/`
+- `GET/PUT/PATCH/DELETE /api/applications/{id}/`
 
-Input:
-```ts
-{
-  q?: string
-  statuses?: ApplicationStatus[]
-  urgency?: "overdue" | "today" | "stale" | "none"
-  sort?: "updated_desc" | "applied_desc" | "applied_asc" | "next_action" | "company"
-}
-```
+Authentication is required. Queries are restricted to `request.user.applications`; creation assigns the current user server-side.
 
-Return:
-```ts
-ApplicationSummary[]
-```
+## Files
 
-### getApplication(id)
+- `GET/POST /api/files/`
+- `GET/PUT/PATCH/DELETE /api/files/{id}/`
 
-Return:
-```ts
-{
-  application: Application
-  tailoredResume: TailoredResume | null
-  communications: Communication[]
-  events: ActivityEvent[]
-}
-```
+Authentication is required. Reads are owner-scoped through the parent, and creation rejects a parent owned by someone else.
 
-### createApplication(input)
+## Reviews
 
-- validate
-- insert
-- create APPLICATION_CREATED event
-- revalidate
-- return id
+Public `GET /api/reviews/` returns approved reviews. Authenticated create/detail/update/delete operations are scoped to the current user. Clients cannot set `is_public`.
 
-### updateApplication(id, input)
+## Authentication
 
-- validate
-- update
-- create NEXT_ACTION_UPDATED event when follow-up materially changes
-- revalidate
+dj-rest-auth supplies endpoints under `/api/auth/`; registration is `/api/auth/registration/`, Google login `/api/auth/google/`, and account deletion `DELETE /api/auth/delete/`.
 
-### changeApplicationStatus(id, status)
-
-- read previous status
-- update
-- create STATUS_CHANGED event
-- revalidate dashboard + detail + applications
-
-### deleteApplication(id)
-
-- delete
-- cascade
-- redirect/list refresh
-
-## Communication
-
-### addCommunication(applicationId, input)
-
-- validate
-- insert
-- create COMMUNICATION_LOGGED event
-- optional requestedStatus:
-  if present, call status update within same server operation if practical
-
-## Resume
-
-### getMasterResume()
-
-Return record or seed/default empty model.
-
-### saveMasterResume(content)
-
-Validate shape.
-
-### createTailoredResume(applicationId)
-
-- ensure master exists
-- deep clone JSON
-- insert
-- event
-- redirect id
-
-### saveTailoredResume(id, content)
-
-- validate
-- compute score
-- update
-- event optional only if not too noisy
-
-## Analytics
-
-### getDashboardData()
-
-Return:
-```ts
-{
-  totals: {
-    total: number
-    active: number
-    interviews: number
-    offers: number
-    followUpsDue: number
-  }
-  statusCounts: Record<ApplicationStatus, number>
-  rates: {
-    response: number
-    interview: number
-    offer: number
-  }
-  needsAttention: AttentionItem[]
-  staleApplications: ApplicationSummary[]
-  recentActivity: TimelineItem[]
-}
-```
-
-## Today
-
-### getTodayQueue()
-
-Return prioritized items:
-```ts
-{
-  id: string
-  applicationId: string
-  company: string
-  positionTitle: string
-  type: "OVERDUE" | "DUE_TODAY" | "INTERVIEW_SOON" | "STALE"
-  label: string
-  dueAt?: string
-  priority: number
-}
-```
-
-## Match
-
-### analyzeResumeMatch(jobDescription, resumeContent)
-
-Return:
-```ts
-{
-  score: number
-  matched: Array<{ term: string; weight: number }>
-  missing: Array<{ term: string; weight: number }>
-  focusTerms: string[]
-}
-```
-
-## Revalidation
-
-After mutation revalidate only relevant routes:
-- `/dashboard`
-- `/applications`
-- `/applications/[id]`
-- `/today`
-- `/resume`
-- tailored resume route
-
-## Error shape
-
-```ts
-type ActionResult<T = void> =
-  | { ok: true; data: T }
-  | { ok: false; error: string; fieldErrors?: Record<string, string[]> }
-```
-
-Never throw raw DB errors into UI.
+No API exists for resume matching, communications, reminders, or advanced analytics.

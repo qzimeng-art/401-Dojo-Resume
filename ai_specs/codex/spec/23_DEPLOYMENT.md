@@ -1,71 +1,15 @@
 # Deployment
 
-## Target
+## Web
 
-Vercel + Supabase.
+The Vite SPA is Vercel-compatible; `frontend/vercel.json` rewrites routes to `index.html`. Set `VITE_API_URL` and the Google OAuth client configuration.
 
-## Environment variables
+## API
 
-Example:
+The Python 3.11 Dockerfile runs Gunicorn on port 8080. Production needs secure Django settings, database credentials, allowed origins/hosts, OAuth, email, migrations, and media handling. PostgreSQL is intended for production; SQLite supports local work.
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
-```
+## Mobile
 
-Only use service role server-side if actually required.
+EAS defines development, preview, and production profiles. Mobile Axios currently targets `https://api.jobtrackerr.com/`; future environment switching should be centralized.
 
-Do not expose it to client.
-
-## Deployment flow
-
-1. create Supabase project
-2. run schema
-3. run seed
-4. configure Vercel env
-5. connect GitHub repo
-6. deploy preview
-7. verify production build
-8. promote/finalize production URL
-
-## README deployment section
-
-Must document:
-- prerequisites
-- install
-- env
-- schema
-- seed
-- dev
-- build
-- deploy
-
-## Commands
-
-Target:
-
-```bash
-npm install
-npm run dev
-npm run typecheck
-npm run test
-npm run build
-npm run seed
-```
-
-If `seed` requires tsx or similar, keep it simple.
-
-## Failure protection
-
-Do not use local SQLite for Vercel production unless deployment design explicitly supports it.
-
-## Production test
-
-After final deployment:
-- hard refresh
-- create temporary record
-- edit
-- delete
-- verify persistence
-- verify mobile
+Older report URLs may be historical. Verify live domains before presenting them as current.
