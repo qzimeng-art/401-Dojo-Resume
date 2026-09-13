@@ -2,7 +2,7 @@
 
 ## Backend
 
-Run Django tests from `backend`. Existing coverage includes blank optional fields, invalid URLs, job requirements, server owner assignment, user isolation, and file ownership. Extend tests for model, serializer, permission, or auth changes.
+Run Django tests from `backend`. Existing coverage includes blank optional fields, invalid URLs, job requirements, server owner assignment, user isolation, and application-file ownership. Add master-resume tests for accepted/rejected file types, metadata, ordering, authenticated isolation, and the intended unauthenticated/demo policy.
 
 ## Web
 

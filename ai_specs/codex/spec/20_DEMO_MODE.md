@@ -7,6 +7,6 @@
 - A signup CTA is visible.
 - Samples cover all four statuses.
 - Private application data is never fetched.
-- Create/edit/delete must not imply persistence.
+- Application create/edit/delete must not imply persistence.
 
-Because the component reuses authenticated controls, mutation changes must either be disabled or update temporary local state only—never call protected APIs for demo records.
+Because the component reuses authenticated controls, application mutations should be disabled or temporary only. Master-resume behavior is currently different: the demo attempts an unauthenticated API upload to the shared `demo_user` and also stores metadata in localStorage; if the API fails, a simulated local fallback succeeds. This is a known inconsistency with the general demo banner and should be resolved in future work.

@@ -9,7 +9,7 @@
 
 ## Implemented product
 
-JobTrackerr! provides registration/login, Google sign-in, an authenticated dashboard, a public demo, application CRUD, application-file uploads, search, board/list views, per-status counts, profile/account controls, and moderated reviews. An Expo mobile companion uses the same API for authentication, viewing, searching, and editing applications.
+JobTrackerr! provides registration/login, Google sign-in, an authenticated dashboard, a public demo, application CRUD, application-file uploads, master-resume upload/display, search, board/list views, per-status counts, profile/account controls, and moderated reviews. An Expo mobile companion uses the same API for authentication, viewing, searching, and editing applications.
 
 Application stages are exactly `Applied`, `Interview`, `Offer`, and `Rejected`.
 
@@ -21,7 +21,7 @@ Application stages are exactly `Applied`, `Interview`, `Offer`, and `Rejected`.
 - Data: Django ORM; SQLite for local development and PostgreSQL support for production.
 - Deployment: Vercel-compatible SPA frontend, Gunicorn/Docker backend, EAS mobile builds.
 
-Both clients consume the Django API. The API is the source of truth and enforces per-user application/file ownership.
+Both clients consume the Django API. The API is the source of truth and enforces per-user application/file ownership. Authenticated master resumes are associated with the signed-in user; unauthenticated master-resume requests currently use a shared demo user.
 
 ## Web routes
 
@@ -31,11 +31,12 @@ Both clients consume the Django API. The API is the source of truth and enforces
 
 - `Application`: owner, company, position, notes, job URL, requirements, status, applied date, timestamps.
 - `ApplicationFile`: parent application, upload, type, original filename, timestamp.
+- `MasterResume`: owner, uploaded PDF/Word document, type, original filename, size, timestamps.
 - `Review`: owner, rating, comment, moderation flag, timestamps.
 
 ## Explicit non-features
 
-There is no structured resume builder, tailored-resume model, match scoring, follow-up queue, recruiter communication timeline, draggable Kanban transition, notification service, or advanced funnel/rate analytics. Attachments may be resumes, but they are application files only.
+There is no structured resume editor, tailored-resume model, resume parsing/match scoring, follow-up queue, recruiter communication timeline, draggable Kanban transition, notification service, or advanced funnel/rate analytics. The resume feature currently stores and displays an uploaded master document only.
 
 ## Quality contract
 
