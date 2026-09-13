@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
 from applications.views import ApplicationViewSet, ApplicationFileViewSet, ReviewViewSet, DeleteAccountView, MasterResumeViewSet
-from applications.views import GoogleLogin
+from applications.views import GoogleLogin, AutoApplyView
 
 #  JWT Authentication
 from rest_framework_simplejwt.views import (
@@ -20,6 +20,7 @@ router.register(r'master-resume', MasterResumeViewSet, basename='master-resume')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/applications/auto-apply/', AutoApplyView.as_view(), name='auto-apply'),
     path('api/', include(router.urls)),
     
     # Auth Endpoints

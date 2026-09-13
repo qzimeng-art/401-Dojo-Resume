@@ -180,7 +180,7 @@ const MasterResumeUploadModal = ({ isOpen, onClose, isDemo = false, onUploadSucc
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               className={`border-2 border-dashed rounded-3xl p-8 sm:p-10 transition-all text-center flex flex-col md:flex-row items-center justify-between gap-8 ${
-                isDragOver ? 'border-blue-500 bg-blue-50/50 scale-[1.01]' : 'border-gray-300 bg-gray-50/50 hover:border-blue-400'
+                isDragOver ? 'border-brand-500 bg-brand-50/50 scale-[1.01]' : 'border-gray-300 bg-gray-50/50 hover:border-brand-400'
               }`}
             >
               {/* Left Action Column */}
@@ -216,8 +216,8 @@ const MasterResumeUploadModal = ({ isOpen, onClose, isDemo = false, onUploadSucc
                   {/* DOC Card */}
                   <div className="w-24 h-32 bg-white border border-gray-200 rounded-xl shadow-md p-3 flex flex-col justify-between transform -rotate-6 transition-transform hover:rotate-0">
                     <div className="flex items-center justify-between">
-                      <span className="bg-blue-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded">DOC</span>
-                      <FileText size={16} className="text-blue-600" />
+                      <span className="bg-brand-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded">DOC</span>
+                      <FileText size={16} className="text-brand-600" />
                     </div>
                     <div className="space-y-1.5 my-2">
                       <div className="h-1.5 bg-gray-200 rounded w-full"></div>
@@ -225,7 +225,7 @@ const MasterResumeUploadModal = ({ isOpen, onClose, isDemo = false, onUploadSucc
                       <div className="h-1.5 bg-gray-200 rounded w-3/4"></div>
                       <div className="h-1.5 bg-gray-200 rounded w-full"></div>
                     </div>
-                    <div className="h-2 bg-blue-100 rounded w-1/2"></div>
+                    <div className="h-2 bg-brand-100 rounded w-1/2"></div>
                   </div>
 
                   {/* PDF Card */}
@@ -249,9 +249,9 @@ const MasterResumeUploadModal = ({ isOpen, onClose, isDemo = false, onUploadSucc
 
           {/* Uploading Progress State */}
           {uploadState === 'uploading' && (
-            <div className="border-2 border-blue-200 rounded-3xl p-8 sm:p-10 bg-blue-50/30 text-center">
+            <div className="border-2 border-brand-200 rounded-3xl p-8 sm:p-10 bg-brand-50/30 text-center">
               <div className="max-w-md mx-auto space-y-6">
-                <div className="inline-flex p-4 bg-blue-100 text-blue-600 rounded-2xl animate-pulse">
+                <div className="inline-flex p-4 bg-brand-100 text-brand-600 rounded-2xl animate-pulse">
                   <FileText size={40} />
                 </div>
                 
@@ -266,13 +266,13 @@ const MasterResumeUploadModal = ({ isOpen, onClose, isDemo = false, onUploadSucc
                 <div className="space-y-2">
                   <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden p-0.5 border border-gray-100">
                     <div
-                      className="bg-blue-600 h-full rounded-full transition-all duration-300 ease-out"
+                      className="bg-brand-600 h-full rounded-full transition-all duration-300 ease-out"
                       style={{ width: `${progress}%` }}
                     ></div>
                   </div>
                   <div className="flex justify-between items-center text-xs font-bold text-gray-500">
                     <span>Processing file</span>
-                    <span className="text-blue-600 text-sm font-black">{progress}%</span>
+                    <span className="text-brand-600 text-sm font-black">{progress}%</span>
                   </div>
                 </div>
               </div>

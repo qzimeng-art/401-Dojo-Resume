@@ -1,4 +1,6 @@
-import { ArrowLeft, Heart, Info, Shield, User, FileText, Upload, Download } from "lucide-react";
+import { useState } from 'react';
+import { ArrowLeft, Heart, Info, Shield, User, FileText, Upload, Download, Edit3 } from "lucide-react";
+import MasterResumeEditorModal from './MasterResumeEditorModal';
 
 const formatFileSize = (bytes) => {
   if (!bytes) return '0 B';
@@ -8,7 +10,9 @@ const formatFileSize = (bytes) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
 };
 
-const ProfileSection = ({ user, onBack, masterResume, onUploadMasterResume }) => {
+const ProfileSection = ({ user, onBack, masterResume, onUploadMasterResume, onMasterResumeUpdated }) => {
+  const [showEditor, setShowEditor] = useState(false);
+  
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Header */}
@@ -27,7 +31,7 @@ const ProfileSection = ({ user, onBack, masterResume, onUploadMasterResume }) =>
         <div className="lg:col-span-1">
           <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
             <div className="flex flex-col items-center text-center">
-              <div className="w-24 h-24 rounded-full bg-linear-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white text-4xl font-black mb-4 shadow-lg shadow-blue-500/20">
+              <div className="w-24 h-24 rounded-full bg-linear-to-br from-brand-600 to-brand-600 flex items-center justify-center text-white text-4xl font-black mb-4 shadow-lg shadow-brand-500/20">
                 {user?.username?.[0]?.toUpperCase() || "U"}
               </div>
               <h2 className="text-xl font-black text-slate-900 leading-tight">{user?.username}</h2>
@@ -35,7 +39,7 @@ const ProfileSection = ({ user, onBack, masterResume, onUploadMasterResume }) =>
               
               <div className="w-full space-y-3">
                 <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-100">
-                  <Shield size={18} className="text-blue-600" />
+                  <Shield size={18} className="text-brand-600" />
                   <div className="text-left leading-tight">
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Account Status</p>
                     <p className="text-sm font-black text-slate-700 uppercase">Verified</p>
@@ -48,7 +52,7 @@ const ProfileSection = ({ user, onBack, masterResume, onUploadMasterResume }) =>
           {/* Quick Stats or Tips in sidebar */}
           <div className="mt-6 p-6 bg-linear-to-br from-slate-800 to-slate-900 rounded-3xl text-white">
             <h4 className="font-bold mb-2 flex items-center gap-2 text-sm">
-              <Info size={16} className="text-blue-400" />
+              <Info size={16} className="text-brand-400" />
               Pro Tip
             </h4>
             <p className="text-xs text-slate-300 leading-relaxed">
@@ -61,27 +65,38 @@ const ProfileSection = ({ user, onBack, masterResume, onUploadMasterResume }) =>
         <div className="lg:col-span-2 space-y-6">
           {/* Master Resume Section */}
           <section className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-2">
               <h3 className="text-lg font-black text-slate-900 flex items-center gap-3">
-                <div className="p-1.5 bg-blue-50 rounded-lg">
-                  <FileText size={18} className="text-blue-600" />
+                <div className="p-1.5 bg-brand-50 rounded-lg">
+                  <FileText size={18} className="text-brand-600" />
                 </div>
                 Master Resume
               </h3>
-              <button
-                onClick={onUploadMasterResume}
-                className="px-4 py-2 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 transition-all text-sm shadow-lg shadow-blue-500/20 active:scale-95 flex items-center gap-2 cursor-pointer"
-              >
-                <Upload size={16} />
-                {masterResume ? 'Upload New Version' : 'Upload Resume'}
-              </button>
+              <div className="flex items-center gap-2">
+                {masterResume && (
+                  <button
+                    onClick={() => setShowEditor(true)}
+                    className="px-4 py-2 bg-white text-brand-600 border border-brand-200 font-black rounded-xl hover:bg-brand-50 transition-all text-sm shadow-sm active:scale-95 flex items-center gap-2 cursor-pointer"
+                  >
+                    <Edit3 size={16} />
+                    Edit Master Text
+                  </button>
+                )}
+                <button
+                  onClick={onUploadMasterResume}
+                  className="px-4 py-2 bg-brand-600 text-white font-black rounded-xl hover:bg-brand-700 transition-all text-sm shadow-lg shadow-brand-500/20 active:scale-95 flex items-center gap-2 cursor-pointer"
+                >
+                  <Upload size={16} />
+                  {masterResume ? 'Upload New Version' : 'Upload Resume'}
+                </button>
+              </div>
             </div>
 
             {masterResume ? (
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4 min-w-0">
                   <div className={`p-3 rounded-2xl flex-shrink-0 ${
-                    masterResume.file_type === 'PDF' ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'
+                    masterResume.file_type === 'PDF' ? 'bg-red-100 text-red-600' : 'bg-brand-100 text-brand-600'
                   }`}>
                     <FileText size={28} />
                   </div>
@@ -91,7 +106,7 @@ const ProfileSection = ({ user, onBack, masterResume, onUploadMasterResume }) =>
                         {masterResume.original_filename}
                       </p>
                       <span className={`text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider ${
-                        masterResume.file_type === 'PDF' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'
+                        masterResume.file_type === 'PDF' ? 'bg-red-100 text-red-700' : 'bg-brand-100 text-brand-700'
                       }`}>
                         {masterResume.file_type || 'Document'}
                       </span>
@@ -131,12 +146,12 @@ const ProfileSection = ({ user, onBack, masterResume, onUploadMasterResume }) =>
           <section className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-black text-slate-900 flex items-center gap-3">
-                <div className="p-1.5 bg-blue-50 rounded-lg">
-                  <User size={18} className="text-blue-600" />
+                <div className="p-1.5 bg-brand-50 rounded-lg">
+                  <User size={18} className="text-brand-600" />
                 </div>
                 General Information
               </h3>
-              <button className="px-4 py-2 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 transition-all text-sm shadow-lg shadow-blue-500/20 active:scale-95 flex items-center gap-2">
+              <button className="px-4 py-2 bg-brand-600 text-white font-black rounded-xl hover:bg-brand-700 transition-all text-sm shadow-lg shadow-brand-500/20 active:scale-95 flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
@@ -185,6 +200,19 @@ const ProfileSection = ({ user, onBack, masterResume, onUploadMasterResume }) =>
           </section>
         </div>
       </div>
+
+      {masterResume && (
+        <MasterResumeEditorModal
+          isOpen={showEditor}
+          onClose={() => setShowEditor(false)}
+          masterResume={masterResume}
+          onSaveSuccess={(updatedResume) => {
+            if (onMasterResumeUpdated) {
+              onMasterResumeUpdated(updatedResume);
+            }
+          }}
+        />
+      )}
     </div>
   );
 };

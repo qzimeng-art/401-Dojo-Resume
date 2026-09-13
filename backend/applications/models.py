@@ -28,6 +28,8 @@ class Application(models.Model):
 
     job_post_url = models.URLField(blank=True, null=True)
     job_requirements = models.TextField(blank=True, null=True)
+    tailored_resume_text = models.TextField(blank=True, null=True)
+    cover_letter = models.TextField(blank=True, null=True)
 
     status = models.CharField(
         max_length=50,
@@ -86,6 +88,7 @@ class MasterResume(models.Model):
     file_type = models.CharField(max_length=50)
     original_filename = models.CharField(max_length=255)
     file_size = models.PositiveIntegerField(default=0)
+    parsed_text = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

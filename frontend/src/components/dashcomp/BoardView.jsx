@@ -7,13 +7,13 @@ const BoardView = ({ statuses, filteredApplications, setSelectedApp, getStatusCo
       {statuses.map(status => (
         <div key={status} className="flex-shrink-0 w-72 flex flex-col h-full">
           <div className="flex items-center justify-between mb-4 px-1">
-            <h2 className="font-bold text-gray-900 flex items-center gap-2">
+            <h2 className="font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
               {status}
-              <span className="bg-gray-200 text-gray-600 text-[10px] px-2 py-0.5 rounded-full">
+              <span className="bg-gray-200 dark:bg-brand-800 text-gray-600 dark:text-gray-300 text-[10px] px-2 py-0.5 rounded-full">
                 {filteredApplications.filter(app => app.status === status).length}
               </span>
             </h2>
-            <button className="text-gray-400 hover:text-gray-600">
+            <button className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300">
               <Plus size={18} />
             </button>
           </div>
@@ -31,8 +31,8 @@ const BoardView = ({ statuses, filteredApplications, setSelectedApp, getStatusCo
                 />
               ))}
             {filteredApplications.filter(app => app.status === status).length === 0 && (
-              <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center">
-                <p className="text-xs text-gray-400">No applications</p>
+              <div className="border-2 border-dashed border-gray-200 dark:border-brand-800 rounded-xl p-8 text-center">
+                <p className="text-xs text-gray-400 dark:text-gray-500">No applications</p>
               </div>
             )}
           </div>

@@ -220,19 +220,14 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # Email Backend Configuration
-if DEBUG:
-    # Development: Use console backend to avoid SMTP authentication issues
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    # Production: Use SMTP backend
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp-relay.brevo.com')
-    EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
-    EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
-    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@jobtrackerr.com')
+# Always use SMTP for the hackathon demo
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'teamcommonworks@gmail.com'
+EMAIL_HOST_PASSWORD = 'nwwy dywg islf fyec'
+DEFAULT_FROM_EMAIL = 'teamcommonworks@gmail.com'
 
 # Custom Social Account Adapter for Auto-Username Generation
 SOCIALACCOUNT_ADAPTER = 'applications.adapters.CustomSocialAccountAdapter'

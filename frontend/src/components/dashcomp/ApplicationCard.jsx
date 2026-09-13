@@ -3,13 +3,13 @@ import { Calendar, Edit2, ExternalLink, FileText, Trash2 } from 'lucide-react';
 const ApplicationCard = ({ app, setSelectedApp, getStatusColor, onEdit, onDelete }) => {
   return (
     <div 
-      className="bg-white rounded-xl border border-gray-200 p-4 mb-3 hover:shadow-lg transition-all cursor-pointer group relative"
+      className="bg-white dark:bg-brand-800 rounded-xl border border-gray-200 dark:border-brand-700 p-4 mb-3 hover:shadow-lg dark:hover:shadow-brand-900/50 transition-all cursor-pointer group relative"
       onClick={() => setSelectedApp(app)}
     >
       <div className="flex items-start justify-between mb-2">
         <div className="flex-1">
-          <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{app.company_name}</h3>
-          <p className="text-sm text-gray-600">{app.position_title}</p>
+          <h3 className="font-bold text-gray-900 dark:text-gray-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">{app.company_name}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">{app.position_title}</p>
         </div>
         <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           {app.job_post_url && (
@@ -26,7 +26,7 @@ const ApplicationCard = ({ app, setSelectedApp, getStatusColor, onEdit, onDelete
           )}
           <button 
             onClick={(e) => { e.stopPropagation(); onEdit(app); }}
-            className="p-1.5 hover:bg-blue-50 rounded-lg text-gray-400 hover:text-blue-600 transition-colors"
+            className="p-1.5 hover:bg-brand-50 rounded-lg text-gray-400 hover:text-brand-600 transition-colors"
           >
             <Edit2 size={14} />
           </button>

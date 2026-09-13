@@ -1,8 +1,12 @@
-import { Calendar, FileText, Upload, X } from 'lucide-react';
+import { Calendar, FileText, Upload, X, Edit3, MessageSquare } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import api from '../../api/axios';
+import TailoredResumeModal from './TailoredResumeModal';
+import CoverLetterModal from './CoverLetterModal';
 
-const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }) => {
+const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null, masterResume = null }) => {
+  const [showTailorModal, setShowTailorModal] = useState(false);
+  const [showCoverLetterModal, setShowCoverLetterModal] = useState(false);
   const [formData, setFormData] = useState({
     company_name: '',
     position_title: '',
@@ -158,9 +162,29 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
 
         {/* Header */}
         <div className="px-6 py-4 flex items-center justify-between border-b border-gray-100">
-          <h2 className="text-xl font-bold text-gray-900">
-            {initialData ? 'Edit Application' : 'Add New Application'}
-          </h2>
+          <div className="flex items-center gap-4">
+            <h2 className="text-xl font-bold text-gray-900">
+              {initialData ? 'Edit Application' : 'Add New Application'}
+            </h2>
+            {initialData && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowCoverLetterModal(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-lg text-xs font-bold transition-colors shadow-sm"
+                >
+                  <MessageSquare size={14} />
+                  Message Hiring Manager
+                </button>
+                <button
+                  onClick={() => setShowTailorModal(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-100 text-purple-700 hover:bg-purple-200 rounded-lg text-xs font-bold transition-colors shadow-sm"
+                >
+                  <Edit3 size={14} />
+                  Tailor Resume
+                </button>
+              </div>
+            )}
+          </div>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 p-1 rounded-full transition-colors"
@@ -187,7 +211,7 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
                 value={formData.company_name}
                 onChange={handleChange}
                 placeholder="e.g., TechCorp"
-                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm"
+                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all text-sm"
               />
             </div>
 
@@ -200,7 +224,7 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
                 value={formData.position_title}
                 onChange={handleChange}
                 placeholder="e.g., Senior Frontend Engineer"
-                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm"
+                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all text-sm"
               />
             </div>
 
@@ -212,7 +236,7 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
                 value={formData.job_post_url}
                 onChange={handleChange}
                 placeholder="https://..."
-                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm"
+                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all text-sm"
               />
             </div>
 
@@ -223,7 +247,7 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm appearance-none cursor-pointer"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all text-sm appearance-none cursor-pointer"
                 >
                   <option value="Applied">Applied</option>
                   <option value="Interview">Interview</option>
@@ -244,7 +268,7 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
                   name="applied_at"
                   value={formData.applied_at}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all text-sm"
                 />
                 <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
               </div>
@@ -258,7 +282,7 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
                 onChange={handleChange}
                 rows="3"
                 placeholder="Skills, experience, qualifications..."
-                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm resize-none"
+                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all text-sm resize-none"
               />
             </div>
 
@@ -270,7 +294,7 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
                 onChange={handleChange}
                 rows="3"
                 placeholder="Your thoughts, interview notes, etc."
-                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm resize-none"
+                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all text-sm resize-none"
               />
             </div>
 
@@ -285,11 +309,11 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
                 onDrop={handleDrop}
                 className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-colors ${
                   isDragOver
-                    ? 'border-blue-400 bg-blue-50'
-                    : 'border-blue-200 bg-blue-50/30 hover:bg-blue-50'
+                    ? 'border-brand-400 bg-brand-50'
+                    : 'border-brand-200 bg-brand-50/30 hover:bg-brand-50'
                 }`}
               >
-                <Upload className="text-blue-400 mb-2" size={24} />
+                <Upload className="text-brand-400 mb-2" size={24} />
                 <p className="text-sm font-medium text-gray-600">Click to upload or drag and drop</p>
                 <p className="text-xs text-gray-400 mt-1">Resume, Cover Letter, etc.</p>
               </div>
@@ -309,7 +333,7 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
                   {pendingFiles.map((file, idx) => (
                     <li key={idx} className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
                       <div className="flex items-center gap-2 min-w-0">
-                        <FileText size={14} className="text-blue-500 shrink-0" />
+                        <FileText size={14} className="text-brand-500 shrink-0" />
                         <span className="text-xs text-gray-700 truncate">{file.name}</span>
                         <span className="text-[10px] text-gray-400 shrink-0">{(file.size / 1024).toFixed(0)} KB</span>
                       </div>
@@ -334,7 +358,7 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
             type="submit"
             form="applicationForm"
             disabled={loading}
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg transition-colors text-sm shadow-lg shadow-blue-200 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-lg transition-colors text-sm shadow-lg shadow-brand-200 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">
@@ -354,6 +378,30 @@ const ApplicationFormModal = ({ isOpen, onClose, onSuccess, initialData = null }
           </button>
         </div>
       </div>
+
+      {initialData && (
+        <TailoredResumeModal
+          isOpen={showTailorModal}
+          onClose={() => setShowTailorModal(false)}
+          application={initialData}
+          masterResume={masterResume}
+          onSaveSuccess={(updatedApp) => {
+            onSuccess();
+          }}
+        />
+      )}
+
+      {initialData && (
+        <CoverLetterModal
+          isOpen={showCoverLetterModal}
+          onClose={() => setShowCoverLetterModal(false)}
+          application={initialData}
+          masterResume={masterResume}
+          onSaveSuccess={(updatedApp) => {
+            onSuccess();
+          }}
+        />
+      )}
     </div>
   );
 };

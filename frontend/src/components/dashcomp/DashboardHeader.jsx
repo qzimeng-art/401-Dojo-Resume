@@ -1,6 +1,7 @@
 import { Briefcase, ChevronDown, LogOut, Search, Settings, User } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import ThemeToggle from '../ThemeToggle';
 
 const DashboardHeader = ({ 
   isDemo, 
@@ -34,57 +35,59 @@ const DashboardHeader = ({
   }, [isProfileOpen, setIsProfileOpen]);
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
+    <header className="bg-white dark:bg-brand-900 border-b border-gray-200 dark:border-brand-800 sticky top-0 z-40 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo - Clickable */}
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
-            <div className="p-2 bg-blue-600 rounded-lg group-hover:scale-110 transition-transform">
+            <div className="p-2 bg-brand-600 rounded-lg group-hover:scale-110 transition-transform">
               <Briefcase className="text-white" size={20} />
             </div>
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">JobTrackerr!</span>
+            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-brand-500">JobDojo</span>
             {isDemo && (
-              <span className="ml-2 bg-yellow-100 text-yellow-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+              <span className="ml-2 bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                 Demo
               </span>
             )}
           </Link>
 
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center bg-gray-100 rounded-xl px-3 py-1.5 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
-              <Search size={16} className="text-gray-400" />
+            <div className="hidden md:flex items-center bg-gray-100 dark:bg-brand-800 rounded-xl px-3 py-1.5 focus-within:ring-2 focus-within:ring-brand-500 transition-all border border-transparent dark:border-brand-700">
+              <Search size={16} className="text-gray-400 dark:text-gray-400" />
               <input 
                 type="text" 
                 placeholder="Quick search..." 
-                className="ml-2 bg-transparent border-none focus:outline-none text-sm w-48"
+                className="ml-2 bg-transparent border-none focus:outline-none text-sm w-48 text-gray-900 dark:text-gray-100 placeholder-gray-400"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
 
-            <div className="h-6 w-px bg-gray-200 mx-2 hidden sm:block"></div>
+            <ThemeToggle />
+
+            <div className="h-6 w-px bg-gray-200 dark:bg-brand-700 mx-1 hidden sm:block"></div>
 
             {/* Profile Dropdown */}
             <div className="relative" ref={dropdownRef}>
               <button 
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-gray-100 transition-all border border-transparent hover:border-gray-200"
+                className="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-gray-100 dark:hover:bg-brand-800 transition-all border border-transparent hover:border-gray-200 dark:hover:border-brand-700"
               >
-                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                <div className="w-8 h-8 rounded-full bg-brand-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
                   {getInitials(displayName)}
                 </div>
-                <span className="text-sm font-semibold text-gray-700 hidden sm:block">
+                <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 hidden sm:block">
                   {displayName.split(' ')[0]}
                 </span>
                 <ChevronDown size={14} className={`text-gray-400 transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 animate-in fade-in zoom-in duration-200 z-50">
-                  <div className="px-4 py-3 border-b border-gray-50 mb-2">
-                     <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">User Account</p>
-                     <p className="text-sm font-black text-gray-900 truncate">{displayName}</p>
-                     {!isDemo && user && <p className="text-xs text-gray-500 truncate">{user.email}</p>}
+                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-brand-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-brand-700 py-2 animate-in fade-in zoom-in duration-200 z-50">
+                  <div className="px-4 py-3 border-b border-gray-50 dark:border-brand-700 mb-2">
+                     <p className="text-xs font-bold text-gray-400 dark:text-gray-400 uppercase tracking-widest mb-1">User Account</p>
+                     <p className="text-sm font-black text-gray-900 dark:text-white truncate">{displayName}</p>
+                     {!isDemo && user && <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>}
                   </div>
                   
                   <button 
@@ -92,20 +95,20 @@ const DashboardHeader = ({
                       setActiveView('profile');
                       setIsProfileOpen(false);
                     }}
-                    className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                    className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-brand-700 hover:text-brand-600 dark:hover:text-white transition-colors"
                   >
                     <User size={16} className="text-gray-400" /> Profile Settings
                   </button>
-                  <button className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                  <button className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-brand-700 hover:text-brand-600 dark:hover:text-white transition-colors">
                     <Settings size={16} className="text-gray-400" /> Account Preferences
                   </button>
 
-                  <div className="h-px bg-gray-100 my-2"></div>
+                  <div className="h-px bg-gray-100 dark:bg-brand-700 my-2"></div>
 
                   {isDemo ? (
                     <button 
                       onClick={() => navigate('/login')}
-                      className="flex items-center gap-3 w-full px-4 py-2 text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors"
+                      className="flex items-center gap-3 w-full px-4 py-2 text-sm font-bold text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-700 transition-colors"
                     >
                       <LogOut size={16} /> Exit Demo & Sign In
                     </button>
@@ -115,7 +118,7 @@ const DashboardHeader = ({
                         logout();
                         navigate('/');
                       }}
-                      className="flex items-center gap-3 w-full px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-50 transition-colors"
+                      className="flex items-center gap-3 w-full px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-50 dark:hover:bg-brand-700 transition-colors"
                     >
                       <LogOut size={16} /> Sign Out
                     </button>
@@ -131,3 +134,4 @@ const DashboardHeader = ({
 };
 
 export default DashboardHeader;
+

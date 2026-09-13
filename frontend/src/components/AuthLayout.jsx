@@ -15,7 +15,7 @@ const AuthLayout = ({ children, title, subtitle }) => {
             alt="Auth Background"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-blue-900/40 backdrop-blur-[2px]"></div>
+          <div className="absolute inset-0 bg-brand-900/40 backdrop-blur-[2px]"></div>
         </div>
 
         {/* Content Overlays */}
@@ -27,22 +27,22 @@ const AuthLayout = ({ children, title, subtitle }) => {
 
         <div className="relative z-10 max-w-lg">
           <div className="mb-8">
-            <Quote className="text-blue-200 mb-4 opacity-50" size={48} />
+            <Quote className="text-brand-200 mb-4 opacity-50" size={48} />
             <p className="text-3xl font-medium leading-tight text-white mb-6">
               "This platform is the reason I finally organized my job search and landed my role at a top tech company."
             </p>
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-blue-500 border-2 border-white/50 flex items-center justify-center font-bold">
+              <div className="w-12 h-12 rounded-full bg-brand-500 border-2 border-white/50 flex items-center justify-center font-bold">
                 SM
               </div>
               <div>
                 <div className="font-bold">Sarah Mitchell</div>
-                <div className="text-sm text-blue-100 italic">Software Engineer</div>
+                <div className="text-sm text-brand-100 italic">Software Engineer</div>
               </div>
             </div>
           </div>
           
-          <div className="flex gap-12 text-blue-100 text-sm font-medium">
+          <div className="flex gap-12 text-brand-100 text-sm font-medium">
             <div className="flex flex-col">
               <span className="text-2xl font-bold text-white">10k+</span>
               <span>Users Tracked</span>
@@ -75,12 +75,12 @@ const AuthLayout = ({ children, title, subtitle }) => {
             )}
           </div>
 
-          <div className="bg-white p-8 rounded-2xl shadow-xl shadow-blue-500/5 border border-gray-100 ring-1 ring-gray-900/5">
+          <div className="bg-white p-8 rounded-2xl shadow-xl shadow-brand-500/5 border border-gray-100 ring-1 ring-gray-900/5">
             {children}
           </div>
           
           <p className="text-center text-xs text-gray-400 mt-8">
-            &copy; 2026 JobTrackerr!. Secure, encrypted, and private.
+            &copy; 2026 JobDojo. Secure, encrypted, and private.
           </p>
         </div>
       </div>

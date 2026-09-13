@@ -2,19 +2,19 @@ import { Plus, Upload } from 'lucide-react';
 
 const StatsSection = ({ statuses, filteredApplications, setShowAddModal, onUploadMasterResume }) => {
   return (
-    <div className="bg-white border-b border-gray-200">
+    <div className="bg-white dark:bg-brand-900 border-b border-gray-200 dark:border-brand-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex-1">
-            <h1 className="text-3xl font-black text-gray-900">Applications</h1>
-            <p className="text-gray-500 mt-1">Track and manage your job search journey</p>
+            <h1 className="text-3xl font-black text-gray-900 dark:text-white">Applications</h1>
+            <p className="text-gray-500 dark:text-gray-400 mt-1">Track and manage your job search journey</p>
           </div>
 
           {/* Upload Master Resume Button (Replaces Google Ad Space placeholder) */}
           <div className="flex items-center justify-center px-4">
             <button 
               onClick={onUploadMasterResume}
-              className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-200 flex items-center gap-2 cursor-pointer"
+              className="bg-brand-600 text-white px-6 py-3 rounded-xl hover:bg-brand-700 font-bold transition-all shadow-lg shadow-brand-200 flex items-center gap-2 cursor-pointer"
             >
               <Upload size={20} />
               Upload Master Resume
@@ -24,7 +24,7 @@ const StatsSection = ({ statuses, filteredApplications, setShowAddModal, onUploa
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setShowAddModal(true)}
-              className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-200 flex items-center gap-2 cursor-pointer"
+              className="bg-brand-600 text-white px-6 py-3 rounded-xl hover:bg-brand-700 font-bold transition-all shadow-lg shadow-brand-200 flex items-center gap-2 cursor-pointer"
             >
               <Plus size={20} />
               New Application
@@ -34,9 +34,9 @@ const StatsSection = ({ statuses, filteredApplications, setShowAddModal, onUploa
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
           {statuses.map(status => (
-            <div key={status} className="bg-gray-50 rounded-2xl p-4 border border-gray-100 min-w-[140px] flex-1">
-              <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">{status}</div>
-              <div className="text-2xl font-black text-gray-900">
+            <div key={status} className="bg-gray-50 dark:bg-brand-800 rounded-2xl p-4 border border-gray-100 dark:border-brand-700 min-w-[140px] flex-1 transition-colors">
+              <div className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">{status}</div>
+              <div className="text-2xl font-black text-gray-900 dark:text-white">
                 {filteredApplications.filter(app => app.status === status).length}
               </div>
             </div>

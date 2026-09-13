@@ -26,7 +26,7 @@ const EmailVerificationBanner = ({ user }) => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 mb-6 relative animate-in fade-in slide-in-from-top-2 duration-500">
+    <div className="bg-gradient-to-r from-brand-50 to-brand-50 border border-brand-200 rounded-xl p-4 mb-6 relative animate-in fade-in slide-in-from-top-2 duration-500">
       <button
         onClick={() => setDismissed(true)}
         className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors"
@@ -35,8 +35,8 @@ const EmailVerificationBanner = ({ user }) => {
       </button>
       
       <div className="flex items-start gap-3 pr-6">
-        <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-          <Mail className="text-blue-600" size={20} />
+        <div className="flex-shrink-0 w-10 h-10 bg-brand-100 rounded-full flex items-center justify-center">
+          <Mail className="text-brand-600" size={20} />
         </div>
         
         <div className="flex-1">
@@ -51,7 +51,7 @@ const EmailVerificationBanner = ({ user }) => {
           <button
             onClick={handleResendVerification}
             disabled={sending || sent}
-            className="text-xs font-bold text-blue-600 hover:text-blue-700 disabled:text-gray-400 transition-colors"
+            className="text-xs font-bold text-brand-600 hover:text-brand-700 disabled:text-gray-400 transition-colors"
           >
             {sent ? "✓ Email sent!" : sending ? "Sending..." : "Resend verification email"}
           </button>

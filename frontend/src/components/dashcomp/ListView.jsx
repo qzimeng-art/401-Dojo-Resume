@@ -3,25 +3,25 @@ import { Edit2, ExternalLink, Trash2 } from 'lucide-react';
 
 const ListView = ({ filteredApplications, setSelectedApp, getStatusColor, onEdit, onDelete }) => {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div className="bg-white dark:bg-brand-800 rounded-xl border border-gray-200 dark:border-brand-700 overflow-hidden transition-colors">
       <table className="w-full text-left">
-        <thead className="bg-gray-50 border-b border-gray-200">
+        <thead className="bg-gray-50 dark:bg-brand-900/50 border-b border-gray-200 dark:border-brand-700">
           <tr>
-            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Company</th>
-            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Position</th>
-            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">URL</th>
-            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Applied</th>
-            <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+            <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Company</th>
+            <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Position</th>
+            <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">URL</th>
+            <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+            <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Applied</th>
+            <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">Actions</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100">
+        <tbody className="divide-y divide-gray-100 dark:divide-brand-700">
           {filteredApplications.map(app => (
-            <tr key={app.id} className="hover:bg-blue-50/50 cursor-pointer transition-colors" onClick={() => setSelectedApp(app)}>
+            <tr key={app.id} className="hover:bg-brand-50/50 dark:hover:bg-brand-700/50 cursor-pointer transition-colors" onClick={() => setSelectedApp(app)}>
               <td className="px-6 py-4">
-                <div className="font-bold text-gray-900">{app.company_name}</div>
+                <div className="font-bold text-gray-900 dark:text-white">{app.company_name}</div>
               </td>
-              <td className="px-6 py-4 text-sm text-gray-600">{app.position_title}</td>
+              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{app.position_title}</td>
               <td className="px-6 py-4">
                 {app.job_post_url ? (
                   <a 
@@ -43,14 +43,14 @@ const ListView = ({ filteredApplications, setSelectedApp, getStatusColor, onEdit
                   {app.status}
                 </span>
               </td>
-              <td className="px-6 py-4 text-sm text-gray-500">
+              <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                 {new Date(app.applied_at).toLocaleDateString()}
               </td>
               <td className="px-6 py-4 text-right">
                 <div className="flex items-center justify-end gap-2">
                   <button 
                     onClick={(e) => { e.stopPropagation(); onEdit(app); }}
-                    className="p-2 hover:bg-blue-50 rounded-lg text-gray-400 hover:text-blue-600 transition-all"
+                    className="p-2 hover:bg-brand-50 rounded-lg text-gray-400 hover:text-brand-600 transition-all"
                     title="Edit"
                   >
                     <Edit2 size={16} />

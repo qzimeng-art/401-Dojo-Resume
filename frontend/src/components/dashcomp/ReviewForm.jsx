@@ -38,7 +38,7 @@ const ReviewForm = ({ onSuccess }) => {
 
   if (!user) {
     return (
-      <div className="text-center p-8 bg-blue-50 rounded-2xl">
+      <div className="text-center p-8 bg-brand-50 rounded-2xl">
         <p className="text-gray-600">Please sign in to leave a review.</p>
       </div>
     );
@@ -96,8 +96,8 @@ const ReviewForm = ({ onSuccess }) => {
           onChange={(e) => setComment(e.target.value)}
           required
           rows={4}
-          placeholder="Tell us about your experience with JobTrackerr!..."
-          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          placeholder="Tell us about your experience with JobDojo..."
+          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent resize-none"
         />
       </div>
 
@@ -105,7 +105,7 @@ const ReviewForm = ({ onSuccess }) => {
       <button
         type="submit"
         disabled={loading || !comment.trim()}
-        className="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
+        className="w-full bg-brand-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
       >
         {loading ? 'Submitting...' : 'Submit Review'}
       </button>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Logo from "./Logo";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -82,7 +83,7 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/80 backdrop-blur-md shadow-md py-3"
+          ? "bg-white/90 dark:bg-brand-900/90 backdrop-blur-md shadow-md py-3 border-b border-gray-100 dark:border-brand-800"
           : "bg-transparent py-5"
       }`}
     >
@@ -90,7 +91,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link to="/">
-            <Logo size="sm" variant={isScrolled ? "gradient" : "light"} className="text-gray-900" />
+            <Logo size="sm" variant={isScrolled ? "gradient" : "light"} className="text-gray-900 dark:text-white" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -100,7 +101,7 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.href}
-                  className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+                  className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -109,57 +110,60 @@ const Navbar = () => {
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+                  className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                 >
                   {link.name}
                 </a>
               )
             ))}
-            <div className="flex items-center gap-4 ml-4">
+
+            <ThemeToggle />
+
+            <div className="flex items-center gap-4 ml-2">
               {user ? (
                 <div className="relative">
                   <button
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
-                    className="flex items-center gap-2 p-1 pr-3 rounded-full hover:bg-gray-100 transition-all border border-transparent hover:border-gray-200"
+                    className="flex items-center gap-2 p-1 pr-3 rounded-full hover:bg-gray-100 dark:hover:bg-brand-800 transition-all border border-transparent hover:border-gray-200 dark:hover:border-brand-700"
                   >
-                    <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                    <div className="w-8 h-8 rounded-full bg-brand-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
                       {getInitials(displayName)}
                     </div>
-                    <span className="text-sm font-semibold text-gray-700">{displayName.split(' ')[0]}</span>
+                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">{displayName.split(' ')[0]}</span>
                     <ChevronDown size={14} className={`text-gray-400 transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {isProfileOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 animate-in fade-in zoom-in duration-200">
-                      <div className="px-4 py-2 border-b border-gray-50 mb-1">
+                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-brand-800 rounded-xl shadow-xl border border-gray-100 dark:border-brand-700 py-2 animate-in fade-in zoom-in duration-200">
+                      <div className="px-4 py-2 border-b border-gray-50 dark:border-brand-700 mb-1">
                         <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Signed in as</p>
-                        <p className="text-sm font-bold text-gray-900 truncate">{displayName}</p>
-                        <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                        <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{displayName}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
                       </div>
-                      <Link to="/dashboard" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                      <Link to="/dashboard" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-brand-700 hover:text-brand-600 dark:hover:text-white transition-colors">
                         <LayoutGrid size={16} /> Dashboard
                       </Link>
                       <Link 
                         to="/dashboard" 
                         onClick={() => setIsProfileOpen(false)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-brand-700 hover:text-brand-600 dark:hover:text-white transition-colors"
                       >
                         <User size={16} /> Profile
                       </Link>
                       <Link 
                         to="/support" 
                         onClick={() => setIsProfileOpen(false)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-brand-700 hover:text-brand-600 dark:hover:text-white transition-colors"
                       >
                         <Heart size={16} /> Support Us
                       </Link>
-                      <hr className="my-1 border-gray-50" />
+                      <hr className="my-1 border-gray-50 dark:border-brand-700" />
                       <button 
                         onClick={() => {
                           logout();
                           navigate("/");
                         }}
-                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                        className="flex items-center gap-2 w-full px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-50 dark:hover:bg-brand-700 transition-colors"
                       >
                         <LogOut size={16} /> Sign Out
                       </button>
@@ -170,13 +174,13 @@ const Navbar = () => {
                 <>
                   <button
                     onClick={() => navigate("/login")}
-                    className="text-sm font-semibold text-gray-700 hover:text-blue-600 transition-colors"
+                    className="text-sm font-semibold text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
                   >
                     Sign In
                   </button>
                   <button
                     onClick={() => navigate("/signup")}
-                    className="bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 font-semibold text-sm shadow-lg hover:shadow-xl transition-all"
+                    className="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
                   >
                     Get Started
                   </button>
@@ -186,10 +190,11 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center gap-2">
+            <ThemeToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-gray-600 hover:text-blue-600 transition-colors p-2"
+              className="text-gray-600 dark:text-gray-300 hover:text-brand-600 transition-colors p-2"
             >
               {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -210,7 +215,7 @@ const Navbar = () => {
                 key={link.name}
                 to={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-3 py-3 text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                className="block px-3 py-3 text-base font-medium text-gray-600 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-all"
               >
                 {link.name}
               </Link>
@@ -219,7 +224,7 @@ const Navbar = () => {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="block px-3 py-3 text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                className="block px-3 py-3 text-base font-medium text-gray-600 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-all"
               >
                 {link.name}
               </a>
@@ -229,7 +234,7 @@ const Navbar = () => {
             {user ? (
               <>
                 <div className="flex items-center gap-3 px-3 py-3 bg-gray-50 rounded-lg">
-                  <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center text-white font-bold shadow-sm">
                     {getInitials(displayName)}
                   </div>
                   <div className="overflow-hidden">
@@ -282,7 +287,7 @@ const Navbar = () => {
                     navigate("/signup");
                     setIsMobileMenuOpen(false);
                   }}
-                  className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold text-base shadow-lg text-center"
+                  className="w-full py-3 bg-brand-600 text-white rounded-lg font-semibold text-base shadow-lg text-center"
                 >
                   Get Started
                 </button>

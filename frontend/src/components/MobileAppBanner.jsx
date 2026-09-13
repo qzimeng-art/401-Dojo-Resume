@@ -31,7 +31,7 @@ const MobileAppBanner = () => {
         <div className="py-24 bg-linear-to-b from-slate-50 to-white overflow-hidden relative border-t border-slate-200">
             {/* Background decorations */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-                 <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-blue-200/30 rounded-full blur-[100px]"></div>
+                 <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-brand-200/30 rounded-full blur-[100px]"></div>
                  <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-200/30 rounded-full blur-[100px]"></div>
             </div>
 
@@ -40,13 +40,13 @@ const MobileAppBanner = () => {
                     
                     {/* Content Section */}
                     <div className="flex-1 text-center lg:text-left">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-sm font-medium mb-6">
-                            <Calendar size={16} className="text-blue-500" />
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-50 border border-brand-100 text-brand-600 text-sm font-medium mb-6">
+                            <Calendar size={16} className="text-brand-500" />
                             <span>Coming Soon to Android</span>
                         </div>
                         
                         <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                            Track Your Applications <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-600">On The Go</span>
+                            Track Your Applications <span className="text-transparent bg-clip-text bg-linear-to-r from-brand-600 to-brand-600">On The Go</span>
                         </h2>
                         
                         <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
@@ -70,8 +70,8 @@ const MobileAppBanner = () => {
 
                         <div className="flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-slate-500">
                            <div className="flex items-center gap-2">
-                               <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
-                                   <Album size={12} className="text-blue-600" />
+                               <div className="w-5 h-5 rounded-full bg-brand-100 flex items-center justify-center">
+                                   <Album size={12} className="text-brand-600" />
                                </div>
                                <span>Preview Build</span>
                            </div>
@@ -99,7 +99,7 @@ const MobileAppBanner = () => {
                             <ChevronLeft size={24} />
                         </button>
 
-                        <div className="relative mx-auto border-gray-900 bg-gray-900 border-[12px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl shadow-blue-200/50 flex flex-col items-center">
+                        <div className="relative mx-auto border-gray-900 bg-gray-900 border-[12px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl shadow-brand-200/50 flex flex-col items-center">
                             {/* Android Camera Hole */}
                             <div className="w-3 h-3 bg-black rounded-full absolute top-4 z-20"></div>
                             
@@ -109,7 +109,7 @@ const MobileAppBanner = () => {
                                     <img 
                                         key={index}
                                         src={ss} 
-                                        alt={`JobTrackerr App Screen ${index + 1}`} 
+                                        alt={`JobDojor App Screen ${index + 1}`} 
                                         className={`w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-500 ${
                                             currentSlide === index ? "opacity-100" : "opacity-0"
                                         }`}
@@ -137,7 +137,7 @@ const MobileAppBanner = () => {
                                     key={index}
                                     onClick={() => setCurrentSlide(index)}
                                     className={`w-2 h-2 rounded-full transition-all ${
-                                        currentSlide === index ? "bg-blue-600 w-6" : "bg-gray-300"
+                                        currentSlide === index ? "bg-brand-600 w-6" : "bg-gray-300"
                                     }`}
                                 />
                             ))}
@@ -146,7 +146,7 @@ const MobileAppBanner = () => {
                         {/* Floating Badge */}
                         <div className="absolute top-1/2 -right-4 lg:-right-12 glass-effect bg-white/80 backdrop-blur-md p-4 rounded-xl border border-white/50 shadow-xl animate-bounce duration-[3000ms]">
                            <div className="flex items-center gap-3">
-                               <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold shadow-lg shadow-blue-100">
+                               <div className="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold shadow-lg shadow-brand-100">
                                    <Smartphone size={20} />
                                </div>
                                <div>

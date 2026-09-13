@@ -11,6 +11,55 @@ from .serializers import ApplicationSerializer, ApplicationFileSerializer, Revie
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
+from django.core.mail import send_mail
+
+class AutoApplyView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        company = request.data.get('company', 'Unknown Company')
+        position = request.data.get('position', 'Unknown Position')
+        job_url = request.data.get('job_url', '')
+
+        # Fallback to demo user if unauthenticated (for the hackathon demo)
+        if request.user and request.user.is_authenticated:
+            target_user = request.user
+        else:
+            target_user, _ = User.objects.get_or_create(
+                username='demo_user',
+                defaults={'email': 'demo@example.com'}
+            )
+
+        # Create application in Applied state
+        application = Application.objects.create(
+            user=target_user,
+            company_name=company,
+            position_title=position,
+            job_post_url=job_url,
+            status='Applied'
+        )
+
+        # Send exciting mock email
+        subject = f"🎉 We applied to {company} for you! You're a great fit! 🎆"
+        message = (
+            f"Hi {target_user.username},\n\n"
+            f"We automatically submitted your resume to {company} for the {position} role!\n\n"
+            f"Your skills and experience were a fantastic match. We wanted to impress the judges and show you how easy JobDojo makes the application process.\n\n"
+            f"Check it out on your board:\n"
+            f"{job_url}\n\n"
+            f"Best of luck,\n"
+            f"The JobDojo Team"
+        )
+        send_mail(
+            subject,
+            message,
+            'teamcommonworks@gmail.com',
+            ['ilya.sukhanovv@gmail.com'],
+            fail_silently=False,
+        )
+
+        serializer = ApplicationSerializer(application)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class ApplicationViewSet(viewsets.ModelViewSet):
@@ -103,11 +152,27 @@ class MasterResumeViewSet(viewsets.ModelViewSet):
         target_user = self._get_target_user()
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        
+        # Mock parsed text for the hackathon demo
+        mock_parsed_text = (
+            "JOHN DOE\n"
+            "Software Engineer\n\n"
+            "EXPERIENCE\n"
+            "Senior Developer at Tech Corp (2020 - Present)\n"
+            "- Built scalable microservices using Python and Django\n"
+            "- Led a team of 5 engineers to deliver the new SaaS platform\n\n"
+            "EDUCATION\n"
+            "B.S. Computer Science, State University\n\n"
+            "SKILLS\n"
+            "Python, Django, React, SQL, AWS"
+        )
+        
         master_resume = serializer.save(
             user=target_user,
             file_type=file_type,
             original_filename=file_obj.name,
-            file_size=file_obj.size
+            file_size=file_obj.size,
+            parsed_text=mock_parsed_text
         )
         return Response({
             "message": "Master resume uploaded successfully!",
