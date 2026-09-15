@@ -12,7 +12,7 @@ const StatsSection = ({ statuses, filteredApplications, setShowAddModal, onUploa
 
           {/* Upload Master Resume Button (Replaces Google Ad Space placeholder) */}
           <div className="flex items-center justify-center px-4">
-            <button 
+            <button
               onClick={onUploadMasterResume}
               className="bg-brand-600 text-white px-6 py-3 rounded-xl hover:bg-brand-700 font-bold transition-all shadow-lg shadow-brand-200 flex items-center gap-2 cursor-pointer"
             >
